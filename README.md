@@ -1,56 +1,55 @@
 # di_auto
 
-A Python project for automated document intelligence using GPT Vision API for image analysis and data extraction.
+Professional US academic transcript extraction using GPT Vision with high accuracy data validation.
 
 ## Features
 
-- Document image processing with GPT Vision
-- Jupyter notebook support for research and development
-- uv package management for fast, reliable dependency handling
+- Multi-page PDF processing with GPT Vision
+- Comprehensive transcript schema (student info, GPA, courses, degrees, honors)
+- Smart course deduplication (preserves retakes, eliminates duplicates)
+- Academic integrity validation and verification metrics
 
-## Setup
+## Installation
 
-1. Install uv (if not already installed):
-   ```bash
-   curl -LsSf https://astral.sh/uv/install.sh | sh
-   ```
+**Prerequisites:** Install poppler-utils for PDF processing
+```bash
+# Ubuntu/Debian: sudo apt-get install poppler-utils
+# macOS: brew install poppler
+```
 
-2. Install dependencies:
-   ```bash
-   uv sync
-   ```
+**Setup:**
+```bash
+# Using uv (recommended)
+uv sync
+uv sync --extra jupyter  # for notebooks
 
-3. For Jupyter notebook support:
-   ```bash
-   uv add jupyter
-   ```
+# Using pip
+pip install -r requirements.txt
+```
 
 ## Usage
 
-- Run Jupyter notebooks: `uv run jupyter lab`
-- Execute main module: `uv run python -m di_auto`
-- Add dependencies: `uv add <package>`
+1. Set OpenAI API key: `export OPENAI_API_KEY="your-key"`
+2. Open `extraction.ipynb` in Jupyter
+3. Run: `test_transcript_extraction('path/to/transcript.pdf')`
 
-## Project Structure
+**Quick example:**
+```python
+from controllers import TranscriptProcessor, PDFToImageConverter, GPTVisionExtractor
+from openai import OpenAI
+import os
 
-- `src/di_auto/` - Main package source code
-- `extraction.ipynb` - Document extraction research notebook
-- `research_process.md` - Research findings and decision log
-- `pyproject.toml` - Project configuration and dependencies
+client = OpenAI(api_key=os.getenv('OPENAI_API_KEY'))
+pdf_converter = PDFToImageConverter()
+gpt_extractor = GPTVisionExtractor(client=client)
+processor = TranscriptProcessor(pdf_converter, gpt_extractor)
+
+result = processor.process_transcript('transcript.pdf')
+```
 
 ## Requirements
 
-Dependencies are managed through `pyproject.toml`. Key packages to add as needed:
-
-```bash
-# Vision/AI packages
-uv add openai pillow
-
-# Data processing
-uv add pandas numpy
-
-# Jupyter environment
-uv add jupyter ipykernel
-
-# Additional packages as required
-```
+- Python 3.12+
+- OpenAI API key (GPT-4o access)
+- Cost: ~$0.30-0.60 per page
+- Time: ~30-60 seconds per page
